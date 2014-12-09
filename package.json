@@ -1,0 +1,22 @@
+{
+  "name": "AlienServer",
+  "version": "1.0.0",
+  "description": "first nodejs project for myself",
+  "main": "app.js",
+  "scripts": {
+    "test": "alientest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:liamscofield/AlienServer.git"
+  },
+  "keywords": [
+    "node_js_for_iOS"
+  ],
+  "author": "alienli",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/liamscofield/AlienServer/issues"
+  },
+  "homepage": "https://github.com/liamscofield/AlienServer"
+}
