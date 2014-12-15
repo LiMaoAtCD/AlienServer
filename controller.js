@@ -3,9 +3,13 @@ var url = require('url');
 var querystring = require('querystring');
 
 
+
+
 var port = 3000;
 
 function launchService(){
+
+
 
 	http.createServer( function(request,response){
 		if (request.method === 'GET') {
@@ -21,14 +25,30 @@ function launchService(){
 				console.log(query.name);
 				console.log(query.pwd);
 
-				response.writeHead(200,{"Content-Type":"application/json"});
-				// response.write({'result':'success'}.stringify);
-				var json  = {"ack":"success"}
+				// var provider = new provider();
+				var provider = require('./model').Provider;
 
-				response.write(JSON.stringify(json));
-				response.end();
+				provider.save({
+					username: query.name,
+					title: "title",
+					content: "content",
+					time: Date.now,
+					age:24
+				},function(error, docs) {
+					if (!error) {
+						response.writeHead(200,{"Content-Type":"application/json"});
+						// response.write({'result':'success'}.stringify);
+						var json  = {"ack":"success"}
 
-			}else{
+
+
+						response.write(JSON.stringify(json));
+						response.end();
+					} else {
+						console.log(error);
+					}
+				});
+			} else {
 				console.log(query.act);
 
 				response.writeHead(404,{"Content-Type":"text/plain"});
