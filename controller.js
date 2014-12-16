@@ -26,15 +26,15 @@ function launchService(){
 				console.log(query.pwd);
 
 				// var provider = new provider();
-				var provider = require('./model').Provider;
+				var provider = require('./model');
 
 				provider.save({
 					username: query.name,
 					title: "title",
 					content: "content",
-					time: Date.now,
+					time: Date.now (),
 					age:24
-				},function(error, docs) {
+				},function(error) {
 					if (!error) {
 						response.writeHead(200,{"Content-Type":"application/json"});
 						// response.write({'result':'success'}.stringify);

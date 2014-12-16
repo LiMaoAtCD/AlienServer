@@ -129,7 +129,7 @@ mongooseModel.remove(conditions, function(error){
 */
 
 
-
+/*
 Provider = function(){};
 
 Provider.prototype.save = function(params, callback) {
@@ -143,11 +143,35 @@ Provider.prototype.save = function(params, callback) {
 	});
 
 	account.save( function (err) {
-		callback();
+        if (err) {
+            callback(err)
+        }else {
+            callback(null);
+        }
 	});
 };
 
 exports.Provider = Provider;
+*/
+
+exports.save = function(params, callback) {
+
+    var account = new Account({
+        username: params['username'],
+        title: params['title'],
+        content: params['content'],
+        time: params['time'],
+        age:params['age']
+    });
+
+    account.save( function (err) {
+        if (err) {
+            callback(err)
+        }else {
+            callback(null, err);
+        }
+    });
+};
 
 
 
