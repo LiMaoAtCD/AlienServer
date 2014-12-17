@@ -1,24 +1,87 @@
 //mongoose 链接
 var mongoose = require("mongoose");
+
 mongoose.connect('mongodb://localhost/AlienServer');
 
+var db = mongoose.connection;
 
-var Schema = mongoose.Schema,
-	ObjectId = Schema.ObjectId;
+db.on('error',console.error.bind(console,'connection error'));
 
-//Schema 结构
+db.once('open', function callback(){
+    //Schema 结构
 
-var Account = new Schema({
-	username: String,
-	title: String,
-	content: String,
-	time: Date,
-	age: Number});
+    var AccountSchema = new mongoose.Schema({
+        username: String,
+        pwd: String,
+    });
+
+    // AccountSchema.methods.findbyusername = function(username, callback){
+    //     return this.find({username:username},callback);
+    // }
+
+    AccountSchema.statics.findbyusername = function(username, cb){
+        return this.find({username:username},cb);
+    }
+    
+    //model
+    var Account = mongoose.model('AccountSchema', AccountSchema);
+    
+    function saveAsNewAccount(params,callback){
+        var account =  new Account({
+            "username":params['username'],
+            "pwd":params['pwd']
+            })
+        console.log("saveAsNewAccount");
+        account.save(function(err){
+            if (err) {
+                callback(err);
+            }else{
+                callback(null,"success");
+            }
+        })
+    }
+
+    function queryusername(username,callback){    
+        Account.findbyusername(username,function(err,result){
+            if (err) {
+                callback(err, null);
+            }else{
+                callback(null, result);
+            }
+        });
+    }
+
+    exports.queryusername = queryusername;
+    exports.saveAsNewAccount = saveAsNewAccount;
+});
 
 
-//model
-mongoose.model('Account', Account);
-var Account = mongoose.model('Account');
+
+
+
+
+
+
+
+
+// exports.save = function(params, callback) {
+
+//     var account = new Account({
+//         username: params['username'],
+//         title: params['title'],
+//         content: params['content'],
+//         time: params['time'],
+//         age:params['age']
+//     });
+
+//     account.save( function (err) {
+//         if (err) {
+//             callback(err)
+//         }else {
+//             callback(null, err);
+//         }
+//     });
+// };
 
 /*
 //添加mongoose实例方法
@@ -129,49 +192,6 @@ mongooseModel.remove(conditions, function(error){
 */
 
 
-/*
-Provider = function(){};
-
-Provider.prototype.save = function(params, callback) {
-
-	var account = new Account({
-		username: params['username'],
-		title: params['title'],
-		content: params['content'],
-		time: params['time'],
-		age:params['age']
-	});
-
-	account.save( function (err) {
-        if (err) {
-            callback(err)
-        }else {
-            callback(null);
-        }
-	});
-};
-
-exports.Provider = Provider;
-*/
-
-exports.save = function(params, callback) {
-
-    var account = new Account({
-        username: params['username'],
-        title: params['title'],
-        content: params['content'],
-        time: params['time'],
-        age:params['age']
-    });
-
-    account.save( function (err) {
-        if (err) {
-            callback(err)
-        }else {
-            callback(null, err);
-        }
-    });
-};
 
 
 
